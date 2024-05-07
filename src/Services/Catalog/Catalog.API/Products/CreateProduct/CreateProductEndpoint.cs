@@ -4,7 +4,7 @@
 	public record CreateProductRequest
 		(string Name, List<string> Category, string Description, string ImageFile, decimal Price);
 	public record CreateProductResponse(Guid Id);
-	public class CreateProductEndpoint() : ICarterModule
+	public class CreateProductEndpoint : ICarterModule
 	{
 		public void AddRoutes(IEndpointRouteBuilder app)
 		{
@@ -14,7 +14,7 @@
 
 				var result = await sender.Send(command);
 
-				var response = request.Adapt<CreateProductResponse>();
+				var response = result.Adapt<CreateProductResponse>();
 
 				return Results.Created($"/products/{response.Id}", response);
 			})
